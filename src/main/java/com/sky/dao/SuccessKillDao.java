@@ -1,6 +1,7 @@
 package com.sky.dao;
 
 import com.sky.entity.SuccessKilled;
+import org.apache.ibatis.annotations.Param;
 
 public interface SuccessKillDao {
 
@@ -10,11 +11,11 @@ public interface SuccessKillDao {
      * @param userPhone
      * @return
      */
-    int insertSuccessKilled(long seckillId, long userPhone);
+    int insertSuccessKilled(@Param("seckillId") long seckillId, @Param("userPhone") long userPhone);
 
     /**查询SuccessKilled
      * @param seckillId
      * @return
      */
-    SuccessKilled queryByIdWithSeckill(long seckillId);
+    SuccessKilled queryByIdWithSeckill(@Param("seckillId") long seckillId, @Param("userPhone") long userPhone);
 }
