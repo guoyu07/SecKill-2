@@ -13,15 +13,23 @@ import com.sky.exception.SeckillException;
 import com.sky.service.SeckillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class SeckillServiceImpl implements SeckillService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    //注入Service注解
+    @Autowired
     private SeckillDao seckillDao;
+    @Autowired
     private SuccessKillDao successKillDao;
+
     private final String slat = "asdfghjkl!@#";
 
     @Override
@@ -42,7 +50,7 @@ public class SeckillServiceImpl implements SeckillService {
         }
         Date startTime = seckill.getStartTime();
         Date endTime = seckill.getEndTime();
-        Date nowTime = new Date;
+        Date nowTime = new Date();
         if (nowTime.getTime() < startTime.getTime() || nowTime.getTime() > endTime.getTime()) {
             return new Exposer(false, seckillId, nowTime.getTime(), startTime.getTime(), endTime.getTime());
         }

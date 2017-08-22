@@ -9,6 +9,7 @@ import com.sky.exception.SeckillException;
 
 import java.util.List;
 
+
 public interface SeckillService {
 
     /**
