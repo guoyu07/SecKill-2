@@ -22,11 +22,12 @@ var seckill = {
                     console.log(killUrl);
                     $('#killBtn').one('click', function () {
                         $(this).addClass('disable');
-                        $.post(killUrl, {}, function () {
+                        $.post(killUrl, {}, function (result) {
                             if (result && result['success']) {
                                 var killResult = result['data'];
-                                var state = killResult['data'];
+                                var state = killResult['state'];
                                 var stateInfo = killResult['stateInfo'];
+                                console.log("秒杀状态" + stateInfo);
                                 node.html('<span class="label label-success">' + stateInfo + '</span>')
                             }
                         });
