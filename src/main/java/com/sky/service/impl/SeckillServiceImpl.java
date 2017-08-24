@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.sky.dao.SeckillDao;
 import com.sky.dao.SuccessKillDao;
+import com.sky.dao.cache.RedisDao;
 import com.sky.dto.Exposer;
 import com.sky.dto.SeckillExecution;
 import com.sky.entity.Seckill;
@@ -28,8 +29,12 @@ public class SeckillServiceImpl implements SeckillService {
     //注入Service注解
     @Autowired
     private SeckillDao seckillDao;
+
     @Autowired
     private SuccessKillDao successKillDao;
+
+    @Autowired
+    private RedisDao redisDao;
 
     private final String slat = "asdfghjkl!@#";
 
@@ -45,9 +50,15 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Exposer exportSeckillUrl(long seckillId) {
-        Seckill seckill = seckillDao.queryById(seckillId);
-        if (seckill == null) {
-            return new Exposer(false, seckillId);
+        //缓存优化
+        Seckill seckill = redisDao.getSeckill(seckillId);
+        if(seckill == null){
+            seckill = seckillDao.queryById(seckillId);
+            if (seckill == null) {
+                return new Exposer(false, seckillId);
+            }else {
+                redisDao.setSeckill(seckill);
+            }
         }
         Date startTime = seckill.getStartTime();
         Date endTime = seckill.getEndTime();
